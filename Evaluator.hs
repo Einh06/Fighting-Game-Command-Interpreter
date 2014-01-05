@@ -29,8 +29,8 @@ module Evaluator
 								nextLine <- evaluate' next
 								return ("" ++ cmdString ++ nextLine)
 
-	evaluate' (KeyNode k) = do
-					return $ key2str k
+	evaluate' (AttackNode k) = do
+					return $ att2str k
 
 	evaluate' (DirectionNode dir next) = do
 						let dirString = dir2str dir
@@ -50,13 +50,13 @@ module Evaluator
 	cmd2str DPF	= "DPF"
 	cmd2str DPB	= "DPB"
 
-	key2str :: Key -> String
-	key2str LP = "LP"
-	key2str MP = "MP" 
-	key2str HP = "HP"
-	key2str LK = "LK"
-	key2str MK = "MK"
-	key2str HK = "HK"
+	att2str :: Attack -> String
+	att2str LP = "LP"
+	att2str MP = "MP" 
+	att2str HP = "HP"
+	att2str LK = "LK"
+	att2str MK = "MK"
+	att2str HK = "HK"
 
 	dir2str :: Direction -> String
 	dir2str UB	= "↖"
