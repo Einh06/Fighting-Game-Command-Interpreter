@@ -79,58 +79,58 @@ module Parser(
 			case token1 of 
 
 				(TokDir x) ->  let (token2, toks2) = (lookAhead toks1, accept toks1)
-							   in
-									case token2 of
+					       in
+							case token2 of
 
-										(TokDir y) -> case x of 
+								(TokDir y) -> case x of 
 
-														-- Forward can lead to 2 motions, dragonF and half circle B
-														F -> case y of
+									-- Forward can lead to 2 motions, dragonF and half circle B
+									F -> case y of
 
-																F -> let (nextNode, restToks) = input toks2
-										 						 	 in
-										 						 	 	(CommandNode DashF nextNode, restToks)
+										F -> let (nextNode, restToks) = input toks2
+										     in
+										 	(CommandNode DashF nextNode, restToks)
 
-										 						D -> dragonF toks2
+										D -> dragonF toks2
 
-										 						DF -> halfCB toks2
+										DF -> halfCB toks2
 
-										 						otherwise -> let (nextNode, restToks) = input toks2
-										 						 			 in
-										 						 			   (DirectionNode x (DirectionNode y nextNode), restToks)
+										otherwise -> let (nextNode, restToks) = input toks2
+										 	     in
+										 		(DirectionNode x (DirectionNode y nextNode), restToks)
 
-										 				-- Down leads to Quarter Circle F and B
-														D ->  case y of
+									-- Down leads to Quarter Circle F and B
+									D ->  case y of
 
-										 						DF -> quarterCF toks2
+										 DF -> quarterCF toks2
 
-										 						DB -> quarterCB toks2
+										 DB -> quarterCB toks2
 
-										 						otherwise -> let (nextNode, restToks) = input toks2
-												 						 	 in
-												 						 	   (DirectionNode x (DirectionNode y nextNode), restToks)
+										 otherwise -> let (nextNode, restToks) = input toks2
+											      in
+												 (DirectionNode x (DirectionNode y nextNode), restToks)
 
-														B -> case y of
+									B -> case y of
 
-																B -> let (nextNode, restToks) = input toks2
-										 						 	 in
-										 						 	 	(CommandNode DashB nextNode, restToks)																
+										B -> let (nextNode, restToks) = input toks2
+										     in
+										 	(CommandNode DashB nextNode, restToks)																
 
-										 						D -> dragonB toks2
+										D -> dragonB toks2
 
-										 						DB -> halfCF toks2
+										DB -> halfCF toks2
 
-										 						otherwise -> let (nextNode, restToks) = input toks2
-										 						 			 in 
-										 						 			  	(DirectionNode x (DirectionNode y nextNode), toks2)
+										otherwise -> let (nextNode, restToks) = input toks2
+										 	     in 
+										 		(DirectionNode x (DirectionNode y nextNode), toks2)
 
-														otherwise ->  let (nextNode, restToks) = input toks1
-																	  in
-																	  		(DirectionNode x nextNode, restToks)
+									otherwise ->  let (nextNode, restToks) = input toks1
+										      in
+											(DirectionNode x nextNode, restToks)
 
-										(TokKey k) -> (DirectionNode x (KeyNode k), toks2)
+								(TokKey k) -> (DirectionNode x (KeyNode k), toks2)
 
-  										TokEnd -> (DirectionNode x EmptyNode, []) 
+  								TokEnd -> (DirectionNode x EmptyNode, []) 
 
 
 				otherwise -> error "No direction, in direction"
@@ -138,40 +138,40 @@ module Parser(
 	halfCF (token1:toks1) = 
 		case token1 of 
 			(TokDir x) -> let (token2, toks2) = (lookAhead toks1, accept toks1) 
-						  in 
-						  	case x of
+				      in 
+					case x of
 
-								D -> case token2 of 
+						D -> case token2 of 
 
-										(TokDir y) -> case y of 
+							(TokDir y) -> case y of 
 
-														DF -> let (token3, toks3) = (lookAhead toks2, accept toks2)
-															  in 
-																case token3 of 
+									DF -> let (token3, toks3) = (lookAhead toks2, accept toks2)
+									      in 
+											case token3 of 
 
-																	(TokDir z) -> let (node, nextToks) = input toks3 
-																				  in
-																					  case z of
+												(TokDir z) -> let (node, nextToks) = input toks3 
+												      	  	  in
+																case z of
 
-																						F -> (CommandNode HCF node, nextToks)
+																	F -> (CommandNode HCF node, nextToks)
 
-																						otherwise -> (DirectionNode x (DirectionNode y (DirectionNode z node)), nextToks)
+																	otherwise -> (DirectionNode x (DirectionNode y (DirectionNode z node)), nextToks)
 
-																	(TokKey k) -> (DirectionNode x (DirectionNode y (KeyNode k)), toks3)
+											(TokKey k) -> (DirectionNode x (DirectionNode y (KeyNode k)), toks3)
 
-																	TokEnd	   -> (DirectionNode x (DirectionNode y EmptyNode), [])
+											TokEnd	   -> (DirectionNode x (DirectionNode y EmptyNode), [])
 
-														otherwise ->  let (node, nextToks) = input toks2
-																	  in
-																	 		(DirectionNode x (DirectionNode y node), nextToks)
+									otherwise -> let (node, nextToks) = input toks2
+										      	 in
+													(DirectionNode x (DirectionNode y node), nextToks)
 
-										(TokKey k) -> (DirectionNode x (KeyNode k), toks2)
+							(TokKey k) -> (DirectionNode x (KeyNode k), toks2)
 
-										TokEnd	   -> (DirectionNode x EmptyNode, [])
+							TokEnd	   -> (DirectionNode x EmptyNode, [])
 
-								otherwise -> let (node, nextToks) = input toks2
-											 in
-											 	(DirectionNode x node, nextToks)
+						otherwise -> let (node, nextToks) = input toks2
+							     	 in
+										(DirectionNode x node, nextToks)
 
 			(TokKey k) -> (KeyNode k, toks1)
 
@@ -180,20 +180,20 @@ module Parser(
 	halfCB (token1:toks1) = 
 		case token1 of 
 			(TokDir x) -> let (token2, toks2) = (lookAhead toks1, accept toks1) 
-						  in 
-						  	case x of
+				      	  in 
+							case x of
 
 								D -> case token2 of 
 
 										(TokDir y) -> case y of 
 
 														DB -> let (token3, toks3) = (lookAhead toks2, accept toks2)
-															  in 
+									    					  in 
 																case token3 of 
 
 																	(TokDir z) -> let (node, nextToks) = input toks3 
-																				  in
-																					  case z of
+												    							  in
+																					case z of
 
 																						B -> (CommandNode HCB node, nextToks)
 
@@ -204,15 +204,15 @@ module Parser(
 																	TokEnd	   -> (DirectionNode x (DirectionNode y EmptyNode), [])
 
 														otherwise ->  let (node, nextToks) = input toks2
-																	  in
-																	 		(DirectionNode x (DirectionNode y node), nextToks)
+										      						  in
+																		(DirectionNode x (DirectionNode y node), nextToks)
 
 										(TokKey k) -> (DirectionNode x (KeyNode k), toks2)
 
 										TokEnd	   -> (DirectionNode x EmptyNode, [])
 
 								otherwise -> let (node, nextToks) = input toks2
-											 in
+							     			 in
 											 	(DirectionNode x node, nextToks)
 
 			(TokKey k) -> (KeyNode k, toks1)
