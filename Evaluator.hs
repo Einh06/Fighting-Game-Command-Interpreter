@@ -13,32 +13,32 @@ module Evaluator
 	evaluate :: [Expression] -> IO ()
 	evaluate [] = do putStrLn "Done Evaluating"
 	evaluate (x:exprs) = do 
-							exprString <- evaluate' x
-							putStrLn exprString
-							evaluate exprs
+				exprString <- evaluate' x
+				putStrLn exprString
+				evaluate exprs
 
 	evaluate' :: Expression -> IO String
 	evaluate' EmptyNode = do 
-							return "Done"
+				return "Done"
 
 	evaluate' (CommandNode cmd next) = do
-										let cmdString = cmd2str cmd
-										case next of
-											EmptyNode -> return cmdString
-											_ -> do 
-													nextLine <- evaluate' next
-													return ("" ++ cmdString ++ nextLine)
+						let cmdString = cmd2str cmd
+						case next of
+							EmptyNode -> return cmdString
+							_ -> do 
+								nextLine <- evaluate' next
+								return ("" ++ cmdString ++ nextLine)
 
 	evaluate' (KeyNode k) = do
-								return $ key2str k
+					return $ key2str k
 
 	evaluate' (DirectionNode dir next) = do
-											let dirString = dir2str dir
-											case next of
-												EmptyNode -> return dirString
-												_ -> do 
-														nextLine <- evaluate' next
-														return ("" ++ dirString ++ nextLine)
+						let dirString = dir2str dir
+						case next of
+							EmptyNode -> return dirString
+							_ -> do 
+								nextLine <- evaluate' next
+								return ("" ++ dirString ++ nextLine)
 
 	cmd2str :: Command -> String
 	cmd2str DashF 	= "Dash Forward"
