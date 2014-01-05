@@ -41,9 +41,9 @@ module Evaluator
 								return ("" ++ dirString ++ nextLine)
 
 	cmd2str :: Command -> String
-	cmd2str DashF 		= "Dash Forward"
-	cmd2str DashB		= "Dash Backward"
-	cmd2str QCF 		= "QCF"
+	cmd2str DashF 	= "Dash Forward"
+	cmd2str DashB	= "Dash Backward"
+	cmd2str QCF 	= "QCF"
 	cmd2str QCB		= "QCB"
 	cmd2str HCF		= "HCF"
 	cmd2str HCB		= "HCB"
@@ -65,5 +65,5 @@ module Evaluator
 	dir2str F	= "→"
 	dir2str DF 	= "↘"
 	dir2str D 	= "↓"
-	dir2str DB  	= "↙"
+	dir2str DB  = "↙"
 	dir2str B 	= "←"
